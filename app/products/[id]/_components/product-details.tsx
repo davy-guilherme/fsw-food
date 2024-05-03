@@ -139,7 +139,6 @@ const ProductDetails = ({product, complementaryProducts}: ProductDetailsProps) =
                         {product.restaurant.deliveryTimeMinutes} min
                     </p>
                     
-                    
                 </div>
                 
             </Card>
@@ -153,6 +152,12 @@ const ProductDetails = ({product, complementaryProducts}: ProductDetailsProps) =
             <div className="mt-6 space-y-3">
                 <h3 className="font-semibold px-5">Sucos</h3>
                 <ProductList products={complementaryProducts} />
+            </div>
+
+            <div className="px-5 mt-6">
+                <Button className="w-full font-semibold">
+                    Adicionar à sacola
+                </Button>
             </div>
         </div>
      );
