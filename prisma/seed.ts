@@ -1055,13 +1055,13 @@ const main = async () => {
 };
 
 main()
-.then(() => {
-  console.log("Seed do banco de dados realizado com sucesso!");
-})
-.catch((error) => {
-  console.error(error);
-  process.exit(1);
-})
-.finally(async () => {
-  await prismaClient.$disconnect();
-});
+  .then(() => {
+    console.log("Seed do banco de dados realizado com sucesso!");
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prismaClient.$disconnect();
+  });
