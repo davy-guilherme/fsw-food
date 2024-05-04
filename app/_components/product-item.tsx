@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { calculateProductTotalPrice, formatCurrency } from '../_helpers/price';
 import { ArrowDownIcon } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '../_lib/utils';
 // import { useRouter } from 'next/navigation';
 
 // interface ProductItemsProps {
@@ -21,19 +22,20 @@ interface ProductItemsProps {
             }
         }
     }>;
+    className?: string
 }
 
-const ProductItem = ( {product}: ProductItemsProps ) => {
+const ProductItem = ( {product, className}: ProductItemsProps ) => {
     // const router = useRouter();
     return ( 
-        <Link className="w-[150px] min-w-[150px]" href={`products/${product.id}`}>
+        <Link className={cn("w-[150px] min-w-[150px]", className)} href={`/products/${product.id}`}>
             <div 
                 className="space-y-2" 
                 // onClick={() => router.push(`/products/${product.id}`)}
             >
                 {/* IMAGEM */}
 
-                <div className="h-[150px] w-full relative">
+                <div className="relative w-full aspect-square">
                     <Image 
                         src={product.imageUrl}
                         alt={product.name}
