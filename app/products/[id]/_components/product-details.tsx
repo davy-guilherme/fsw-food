@@ -12,6 +12,16 @@ import DeliveryInfo from "@/app/_components/delivery-info";
 import { CartContext } from "@/app/_context/cart";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
 import Cart from "@/app/_components/cart";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,s
+  } from "@/app/_components/ui/alert-dialog"
 
 interface ProductDetailsProps {
     // product: Product
@@ -29,16 +39,36 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({product, complementaryProducts}: ProductDetailsProps) => {
     const [quantity, setQuantity] = useState(1);
-    const [isCartOpen, setIsCartOpen] = useState(false)
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
     
     const {addProductToCart, products} = useContext(CartContext);
 
     console.log(products)
 
-    const handleAddToCartClick = () => {
-        addProductToCart(product, quantity);
+    const addToCart = ({emptyCart}: {emptyCart?: boolean}) => {
+        addProductToCart({product, quantity, emptyCart});
         setIsCartOpen(true);
+        setIsConfirmationDialogOpen(false);
+    }
+
+    const handleAddToCartClick = () => {
+        // VERIFICAR SE H´A ALGUM PRODUTO DE OUTRO RESTAURANTE NO CARRINHO
+        const hasDifferentRestaurantProduct = products.some(
+            (cartProduct) => cartProduct.restaurantId != product.restaurantId // TODO: UNDERSTAND BETTER AND CHANGE
+        )
+
+        // SE HOUVE ABRIR UM AVISO
+        if (hasDifferentRestaurantProduct) {
+            return setIsConfirmationDialogOpen(true)
+        }
+
+        addToCart({
+            emptyCart: false,
+        })
     } 
+
+    
         
 
     const handleIncreaseQuantityClick = () => setQuantity(currentState => currentState + 1);
@@ -151,6 +181,27 @@ const ProductDetails = ({product, complementaryProducts}: ProductDetailsProps) =
                     <Cart />
                 </SheetContent>
             </Sheet>
+
+            <AlertDialog
+                open={isConfirmationDialogOpen}
+                onClick={setIsConfirmationDialogOpen}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Você só pode adicionar itens de um restaurante por vez</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Deseja mesmo adicionar esse produto? Isso limpará sua sacola atual.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => addToCart({emptyCart: true})}>
+                        Esvaziar sacola e Adicionar
+                    </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
         </>
         
      );
