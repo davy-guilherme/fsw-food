@@ -20,7 +20,7 @@ import {
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
-    AlertDialogTitle,s
+    AlertDialogTitle
   } from "@/app/_components/ui/alert-dialog"
 
 interface ProductDetailsProps {
