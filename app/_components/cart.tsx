@@ -19,8 +19,17 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import { toast } from "@/app/_components/ui/use-toast"
+import { useRouter } from "next/navigation";
+import { ToastAction } from "./ui/toast";
 
-const Cart = () => {
+interface CartProps {
+    setIsOpen: () => void;
+}
+
+const Cart = ({setIsOpen} : CartProps) => {
+    const router = useRouter();
+
     const {data} = useSession();
 
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -36,6 +45,8 @@ const Cart = () => {
         const restaurant = products[0].restaurant;
 
         try {
+
+
             
             setIsSubmitLoading(true);
 
@@ -63,8 +74,19 @@ const Cart = () => {
             });
 
             clearCart();
+
+            setIsOpen(false);
+
+            toast({
+                // variant: "destructive",
+                title: "Pedido finalizado com sucesso!",
+                description: "Você pode acampanhá-lo na tela dos seus pedidos.",
+                action: <ToastAction onClick={() => router.push('/my-orders')} altText="Meus Pedidos">Meus Pedidos</ToastAction>,
+              })
+
         } catch (error) {
             console.error(error);
+            alert(error)
         } finally {
             setIsSubmitLoading(false)
         }
