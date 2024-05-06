@@ -184,7 +184,7 @@ const ProductDetails = ({product, complementaryProducts}: ProductDetailsProps) =
 
             <AlertDialog
                 open={isConfirmationDialogOpen}
-                onClick={setIsConfirmationDialogOpen}
+                onOpenChange={setIsConfirmationDialogOpen}
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
