@@ -8,7 +8,9 @@ import { calculateProductTotalPrice } from "../_helpers/price";
 export interface CartProduct extends Prisma.ProductGetPayload<{include: {
     restaurant: {
         select: {
-            deliveryFee: true
+            id: true,
+            deliveryFee: true,
+            deliveryTimeMinutes: true
         }
     }
 }}> {
@@ -24,21 +26,22 @@ interface ICartContext {
     totalDiscounts: number;
     // addProductToCart: (product: Product, quantity: number) => void;
     addProductToCart: ({ product, quantity, emptyCart }: {
-        product: Prisma.ProductGetPayload<{
-            include: {
-                restaurant: {
-                    select: {
-                        deliveryFee: true;
-                    };
-                };
-            };
-        }>;
+        product: Prisma.ProductGetPayload<{include: {
+            restaurant: {
+                select: {
+                    id: true,
+                    deliveryFee: true,
+                    deliveryTimeMinutes: true
+                }
+            }
+        }}>;
         quantity: number;
         emptyCart?: boolean;
     }) => void
     removeProductFromCart: (productId: string) => void;
     increaseProductQuantity: (productId: string) => void;
     decreaseProductQuantity: (productId: string) => void;
+    clearCart: () => void;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -51,10 +54,15 @@ export const CartContext = createContext<ICartContext>({
     removeProductFromCart: () => {},
     increaseProductQuantity: () => {},
     decreaseProductQuantity: () => {},
+    clearCart: () => {},
 })
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [products, setProducts] = useState<CartProduct[]>([]);
+
+    const clearCart = () => {
+        return setProducts([]);
+    }
 
     const subtotalPrice = useMemo(() => {
         // acc = accumulator
@@ -177,6 +185,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             totalPrice,
             totalQuantity,
             totalDiscounts,
+            clearCart,
             addProductToCart,
             removeProductFromCart,
             decreaseProductQuantity,
