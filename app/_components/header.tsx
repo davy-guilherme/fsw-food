@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 
 const Header = () => {
+    // eslint-disable-next-line no-unused-vars
     const {data, status} = useSession();
 
     const handleSignOutClick = () => signOut();

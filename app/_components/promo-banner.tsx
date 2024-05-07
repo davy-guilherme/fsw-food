@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
 
 const PromoBanner = (props: ImageProps) => {

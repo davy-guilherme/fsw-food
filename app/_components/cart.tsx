@@ -24,7 +24,8 @@ import { useRouter } from "next/navigation";
 import { ToastAction } from "./ui/toast";
 
 interface CartProps {
-    setIsOpen: () => void;
+    // eslint-disable-next-line no-unused-vars
+    setIsOpen: (isOpen: boolean) => void;
 }
 
 const Cart = ({setIsOpen} : CartProps) => {
@@ -155,7 +156,7 @@ const Cart = ({setIsOpen} : CartProps) => {
                                         {
                                             Number(products?.[0].restaurant.deliveryFee) == 0 
                                             ? <span className="uppercase text-primary font-medium">Grátis</span>
-                                            : <span>{ formatCurrency(products?.[0].restaurant.deliveryFee) }</span>
+                                            : <span>{ formatCurrency(Number(products?.[0].restaurant.deliveryFee)) }</span>
                                         }
                                 </div>
 

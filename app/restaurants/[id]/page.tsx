@@ -9,7 +9,7 @@ import CartBanner from "./_components/cart-banner";
 
 interface RestaurantPageProps {
     params: {
-        id
+        id: string;
     }
 }
 const ResaurantPage = async ({ params: {id}}: RestaurantPageProps) => {
